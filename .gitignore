@@ -1,2 +1,6 @@
 .vscode
 .DS_Store
+telegram_bot/tg_token
+telegram_bot/*.json
+telegram_bot/store.txt
+token
