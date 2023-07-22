@@ -1,6 +1,6 @@
 // Define the game constants
-var canvasWidth = 400;
-var canvasHeight = 400;
+var canvasWidth = 800;
+var canvasHeight = 1500;
 var gridSize = 20;
 var initialSnakeLength = 10;
 var snakeSpeed = 200; // milliseconds between each snake movement
@@ -90,6 +90,39 @@ document.addEventListener("DOMContentLoaded", function () {
     function getRandomPosition(max) {
         return Math.floor(Math.random() * max / gridSize) * gridSize;
     }
+    // Define touch variables
+    var touchStartX = 0;
+    var touchStartY = 0;
+    // Handle touch start event
+    canvas.addEventListener("touchstart", function (event) {
+        touchStartX = event.touches[0].clientX;
+        touchStartY = event.touches[0].clientY;
+    });
+    // Handle touch end event
+    canvas.addEventListener("touchend", function (event) {
+        var touchEndX = event.changedTouches[0].clientX;
+        var touchEndY = event.changedTouches[0].clientY;
+        var dx = touchEndX - touchStartX;
+        var dy = touchEndY - touchStartY;
+        if (Math.abs(dx) > Math.abs(dy)) {
+            // Horizontal swipe
+            if (dx > 0) {
+                snake.setDirection("ArrowRight");
+            }
+            else {
+                snake.setDirection("ArrowLeft");
+            }
+        }
+        else {
+            // Vertical swipe
+            if (dy > 0) {
+                snake.setDirection("ArrowDown");
+            }
+            else {
+                snake.setDirection("ArrowUp");
+            }
+        }
+    });
     // Create the snake object
     var snake = new Snake();
     var food = new Food();

@@ -1,6 +1,6 @@
 // Define the game constants
-const canvasWidth = 400;
-const canvasHeight = 400;
+const canvasWidth = 800;
+const canvasHeight = 1500;
 const gridSize = 20;
 const initialSnakeLength = 10;
 const snakeSpeed = 200; // milliseconds between each snake movement
@@ -107,6 +107,40 @@ document.addEventListener("DOMContentLoaded", () => {
     function getRandomPosition(max: number) {
         return Math.floor(Math.random() * max / gridSize) * gridSize;
     }
+
+    // Define touch variables
+    let touchStartX = 0;
+    let touchStartY = 0;
+  
+    // Handle touch start event
+    canvas.addEventListener("touchstart", (event) => {
+      touchStartX = event.touches[0].clientX;
+      touchStartY = event.touches[0].clientY;
+    });
+  
+    // Handle touch end event
+    canvas.addEventListener("touchend", (event) => {
+      const touchEndX = event.changedTouches[0].clientX;
+      const touchEndY = event.changedTouches[0].clientY;
+      const dx = touchEndX - touchStartX;
+      const dy = touchEndY - touchStartY;
+  
+      if (Math.abs(dx) > Math.abs(dy)) {
+        // Horizontal swipe
+        if (dx > 0) {
+          snake.setDirection("ArrowRight");
+        } else {
+          snake.setDirection("ArrowLeft");
+        }
+      } else {
+        // Vertical swipe
+        if (dy > 0) {
+          snake.setDirection("ArrowDown");
+        } else {
+          snake.setDirection("ArrowUp");
+        }
+      }
+    });
 
     // Create the snake object
     const snake = new Snake();
