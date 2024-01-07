@@ -5,3 +5,4 @@ misc/telegram_bot/*.json
 misc/telegram_bot/store.txt
 token
 venv
+__pycache__

@@ -1,8 +1,7 @@
 import datetime
 from enum import Enum
 
-import gspread
-from google.oauth2 import service_account
+from utils import client
 
 
 class WeightExercise(Enum):
@@ -37,15 +36,6 @@ class Record:
         return ("; ").join([self.exercise, self.exercise_data, self.exercise_notes])
 
     def to_gsheet(self):
-        scope = [
-            "https://spreadsheets.google.com/feeds",
-            "https://www.googleapis.com/auth/drive",
-        ]
-        credentials = service_account.Credentials.from_service_account_file(
-            "cognac-explorer-tg-bot.json"
-        )
-        scoped_credentials = credentials.with_scopes(scope)
-        client = gspread.authorize(scoped_credentials)
         spreadsheet = client.open("test_tg_bot")
         worksheet = spreadsheet.get_worksheet(0)
         worksheet.append_row(
@@ -54,6 +44,8 @@ class Record:
                 self.exercise,
                 self.formula,
                 self.best_set,
+                1000,
+                100,
                 self.exercise_notes,
                 self.get_raw_data(),
             ]

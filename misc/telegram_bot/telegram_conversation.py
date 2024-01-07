@@ -9,6 +9,7 @@ from telegram.ext import (
 )
 
 from data_stuff import Record
+from utils import render_plot, read_last_n_records
 
 
 def get_token():
@@ -68,6 +69,7 @@ class TelegramConversation:
         context.user_data["exercise_notes"] = update.message.text
         self.logger.info("Exercise data %s", update.message.text)
         await self.save_data(update, context)
+        await self.send_stats(update)
         await self.start(update, context)
         return EXERCISE
 
@@ -83,6 +85,10 @@ class TelegramConversation:
             "Bye! Send /start to start again.", reply_markup=ReplyKeyboardRemove()
         )
         return ConversationHandler.END
+
+    async def send_stats(self, update):
+        dates, values = read_last_n_records(6, 5)
+        await update.message.reply_photo(render_plot(dates, values))
 
     def create_conversation(self):
         conversation = ConversationHandler(
