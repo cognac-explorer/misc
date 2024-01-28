@@ -1,8 +1,6 @@
 import datetime
 from enum import Enum
 
-from utils import client
-
 
 class WeightExercise(Enum):
     SQUAT = "Squat"
@@ -18,36 +16,41 @@ class Record:
         self.exercise_data = exercise_data
         self.exercise_notes = exercise_notes
         self.formula = self.get_formula()
-        self.best_set = self.get_best_set()
+        data = self.get_record_characteristics()
+        self.best_set = data[0]
+        self.max_weight = data[1]
+        self.total_weight = data[2]
 
     def get_formula(self):
         return self.exercise_data.replace(":", "*").replace("-", " + ")
 
-    def get_best_set(self):
-        """Defined as max weight."""
-        best_reps, best_weight = 0, 0
+    def get_record_characteristics(self):
+        # best set is defined by having max weight
+        best_reps, max_weight, total_weight = 0, 0, 0
         for set in self.formula.split(" + "):
             sets, reps, weight = map(int, set.split("*"))
-            if weight > best_weight:
-                best_reps, best_weight = reps, weight
-        return f"{best_reps}*{best_weight}"
+            total_weight += reps * weight
+            if weight > max_weight:
+                best_reps, max_weight = reps, weight
+
+        return f"{best_reps}*{max_weight}", max_weight, total_weight
 
     def get_raw_data(self):
         return ("; ").join([self.exercise, self.exercise_data, self.exercise_notes])
 
-    def to_gsheet(self):
+    def to_gsheet(self, client, sheet_name):
         spreadsheet = client.open("test_tg_bot")
         worksheet = spreadsheet.get_worksheet(0)
         worksheet.append_row(
             [
+                # TODO: use user timezone
                 datetime.datetime.now().isoformat(),
                 self.exercise,
                 self.formula,
                 self.best_set,
-                1000,
-                100,
+                self.max_weight,
+                self.total_weight,
                 self.exercise_notes,
-                self.get_raw_data(),
             ]
         )
 
