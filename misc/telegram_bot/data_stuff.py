@@ -1,17 +1,11 @@
 import datetime
-from enum import Enum
-
-
-class WeightExercise(Enum):
-    SQUAT = "Squat"
-    DEADLIFT = "Deadlift"
-    BENCHPRESS = "Benchpress"
+from config import Exercise, config
 
 
 class Record:
     """Single record."""
 
-    def __init__(self, exercise: WeightExercise, exercise_data: str, exercise_notes: str):
+    def __init__(self, exercise: Exercise, exercise_data: str, exercise_notes: str):
         self.exercise = exercise
         self.exercise_data = exercise_data
         self.exercise_notes = exercise_notes
@@ -35,12 +29,10 @@ class Record:
 
         return f"{best_reps}*{max_weight}", max_weight, total_weight
 
-    def get_raw_data(self):
-        return ("; ").join([self.exercise, self.exercise_data, self.exercise_notes])
-
     def to_gsheet(self, client, sheet_name):
         spreadsheet = client.open("test_tg_bot")
-        worksheet = spreadsheet.get_worksheet(0)
+        worksheet_index = config[self.exercise]
+        worksheet = spreadsheet.get_worksheet(worksheet_index)
         worksheet.append_row(
             [
                 # TODO: use user timezone

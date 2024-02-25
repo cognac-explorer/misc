@@ -10,6 +10,7 @@ from telegram.ext import (
 
 from data_stuff import Record
 from utils import render_plot, read_last_n_records, get_gs_client, GSHEET_FILENAME
+from config import tg_reply_keyboard
 
 
 def get_token():
@@ -29,7 +30,7 @@ class TelegramConversation:
 
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         """Starts the conversation and asks user about exercise."""
-        reply_keyboard = [["Squat", "Deadlift"], ["Pull-ups", "Push-ups"]]
+        reply_keyboard = tg_reply_keyboard
         text = "Select exercise which result to save. Send /cancel to stop."
 
         self.logger.info("Telegram conversation started")
