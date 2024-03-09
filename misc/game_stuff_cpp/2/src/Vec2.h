@@ -21,8 +21,13 @@ public:
     void operator -= (const Vec2 & rhs);
     void operator *= (const float val);
     void operator /= (const float val);
-    
-    Vec2 norm();
+
+    Vec2 rotate(const float angle) const;
+    Vec2 norm() const;
+    void norm();
+    void scale(const float minLen, const float maxLen);
     float dist(const Vec2 & rhs) const;
+    float len() const;
+
     void print() const;
 };

@@ -66,10 +66,38 @@ float Vec2::dist(const Vec2 & rhs) const
     return 0;
 }
 
-Vec2 Vec2::norm()
+Vec2 Vec2::rotate(const float angle) const
+{
+    float radians = angle * M_PI / 180;
+    float cosAngle = std::cos(radians);
+    float sinAngle = std::sin(radians);
+    return Vec2(x * cosAngle - y * sinAngle, x * sinAngle + y * cosAngle);
+}
+
+Vec2 Vec2::norm() const
 {
     float len = sqrt(x * x + y * y);
     return Vec2(x / len, y / len);
+}
+
+void Vec2::norm()
+{
+    float len = sqrt(x * x + y * y);
+    x = x / len;
+    y = y / len;
+}
+
+float Vec2::len() const
+{
+    return sqrt(x * x + y * y);
+}
+
+void Vec2::scale(const float minLen, const float maxLen)
+{
+    float len = this->len();
+    float scale = minLen + rand() % static_cast<int>(maxLen - minLen + 1);
+    x = x * scale / len;
+    y = y * scale / len;
 }
 
 void Vec2::print() const
