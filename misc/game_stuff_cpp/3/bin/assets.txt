@@ -1,0 +1,6 @@
+Texture TexBrick ../bin/images/brick.png
+Texture TexRun ../bin/images/mega_man.png
+Texture TexCloud1 ../bin/images/cloud3.png
+Animation Brick TexBrick 1 0
+Animation Run TexRun 5 4
+Animation Cloud1 TexCloud1 1 0

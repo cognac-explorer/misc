@@ -28,12 +28,12 @@ void Game::init()
     m_enemyConfig.outlineColorB = 0;
     m_enemyConfig.outlineThickness = 7;
     m_enemyConfig.verticesMin = 3;
-    m_enemyConfig.verticesMax = 8;
-    m_enemyConfig.spawnInterval = 100;
+    m_enemyConfig.verticesMax = 10;
+    m_enemyConfig.spawnInterval = 60;
     m_enemyConfig.smallEnemyLifespan = 40;
     m_enemyConfig.smallEnemySizeScale = 2.5;
     m_enemyConfig.speedMin = 1;
-    m_enemyConfig.speedMax = 5;
+    m_enemyConfig.speedMax = 7;
 
     m_bulletConfig.shapeR = 8;
     m_bulletConfig.collisionR = 7;
@@ -61,7 +61,7 @@ void Game::run()
     while(m_running)
     {
         m_entities.update();
-        std::cout<<m_entities.len()<<std::endl;
+        // std::cout<<m_entities.len()<<std::endl;
         sEnemySpawner();
         sMovement();
         sCollision();
