@@ -34,6 +34,12 @@ void Assets::loadFromFile(std::string path)
             Animation a = Animation(name, t, frames, speed);
             addAnimation(name, a);
         }
+        if (asset == "Font")
+        {
+            std::string name, path;
+            iss >> name >> path;
+            addFont(name, path);
+        }
     }
     
     inputFile.close();
@@ -65,4 +71,19 @@ void Assets::addAnimation(std::string & name, Animation & animation)
 const Animation & Assets::getAnimation(const std::string & name) const
 {
     return m_animations.at(name);
+}
+
+void Assets::addFont(std::string & name, std::string & path)
+{
+    sf::Font font;
+    if (!font.loadFromFile(path)) 
+    {
+        std::cerr << "Error opening font file " << path << std::endl;
+    }
+    m_fonts[name] = font;
+}
+
+const sf::Font & Assets::getFont(const std::string & name) const
+{
+    return m_fonts.at(name);
 }

@@ -55,6 +55,7 @@ public:
     bool shoot = false;
     bool canShoot = true;
     bool canJump = true;
+    int startFrame = 0;
 
     CInput() {}
 };

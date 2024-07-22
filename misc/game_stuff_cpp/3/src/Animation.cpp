@@ -27,15 +27,18 @@ Animation::Animation(const std::string & name, const sf::Texture & t, size_t fra
 
 void Animation::update()
 {   
-    // std::cout << m_currentFrame << ' ' << m_speed << std::endl;
-    m_currentFrame++;
-    if (m_speed != 0 && std::floor(m_currentFrame / m_speed) == m_frameCount)
+    
+    if (m_frameCount == 1)
     {
-        m_currentFrame = 0;
+        m_sprite.setTextureRect(sf::IntRect(0, 0, m_size.x, m_size.y));
     }
-    if (m_speed != 0 && m_currentFrame % m_speed == 0)
+    else
     {
-        m_sprite.setTextureRect(sf::IntRect(std::floor(m_currentFrame / m_speed) * m_size.x, 0, m_size.x, m_size.y));
+        if (m_currentFrame % m_speed == 0)
+        {
+            m_sprite.setTextureRect(sf::IntRect(std::floor(m_currentFrame / m_speed) * m_size.x, 0, m_size.x, m_size.y));
+        }
+        m_currentFrame++;
     }
 }
 
@@ -56,7 +59,7 @@ sf::Sprite & Animation::getSprite()
 
 bool Animation::hasEnded() const
 {
-    if (m_speed != 0 && m_currentFrame % m_speed == m_frameCount)
+    if (m_speed != 0 && m_currentFrame / m_speed == m_frameCount)
     {
         return true;
     }

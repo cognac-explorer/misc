@@ -1,2 +1,2 @@
 GX GY BoundingBoxW BoundingBoxH SpeedLeftRight SpeedJump SpeedMax Gravity BulletAnimation
-100 200 50 64 7 7 20 1 Bullet
+100 200 50 78 7 18 20 1 Bullet

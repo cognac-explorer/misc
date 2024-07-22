@@ -13,8 +13,9 @@ public:
     void loadFromFile(std::string path);
     void addTexture(std::string & name, std::string & path);
     void addAnimation(std::string & name, Animation & animation);
+    void addFont(std::string & name, std::string & path);
 
     sf::Texture & getTexture(const std::string & name);
     const Animation & getAnimation(const std::string & name) const;
-    // sf::Font getFont(std::string & name);
+    const sf::Font & getFont(const std::string & name) const;
 };
