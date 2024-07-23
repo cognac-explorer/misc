@@ -30,7 +30,7 @@ void ScenePlay::init(const std::string & levelPath)
     registerAction(sf::Keyboard::Space,  "SHOOT");
 
     m_gridText.setCharacterSize(12);
-    // m_gridText.setFont(m_game->getAssets().getFont("Tech"));
+    m_gridText.setFont(m_game->getAssets().getFont("Main"));
     
     loadLevel(levelPath);
 }
@@ -197,6 +197,19 @@ void ScenePlay::sMovement()
         }
         e->getComponent<CTransform>().pos += velocity;
     }
+    // if player fall below
+    if (m_player->getComponent<CTransform>().pos.y > m_game->window().getSize().y)
+    {
+        std::stringstream ss;
+        ss << "You lose";
+        sf::Text t;
+        t.setString(ss.str());
+        t.setCharacterSize(20);
+        t.setFillColor(sf::Color::Black);
+        t.setPosition(m_game->window().getView().getCenter());
+        m_game->window().draw(t);
+        m_player->destroy();
+    }
 }
 
 void ScenePlay::sRender()
@@ -265,18 +278,14 @@ void ScenePlay::sRender()
             {
                 std::stringstream ss;
                 ss << "(" << x / m_gridSize.x << ", " << (m_game->window().getSize().y - y) / m_gridSize.y - 1 << ")";
-                sf::Text text;
-                text.setFont(m_game->getAssets().getFont("Main"));
-                text.setString(ss.str());
-                text.setCharacterSize(10);
-                text.setFillColor(sf::Color::Black);
-                text.setPosition(x + 5, y + 5); // Offset the text slightly from the grid intersection
-                m_game->window().draw(text);
+                m_gridText.setString(ss.str());
+                m_gridText.setCharacterSize(10);
+                m_gridText.setFillColor(sf::Color::Black);
+                m_gridText.setPosition(x + 5, y + 5); // Offset the text slightly from the grid intersection
+                m_game->window().draw(m_gridText);
             }
         }
-
     }
-
     m_game->window().display();
 }
 
@@ -341,12 +350,12 @@ void ScenePlay::sLifespan()
 
 void ScenePlay::sCollision()
 {
-    Physics ph;
+    bool is_in_air = true;
 
     for (auto tile : m_entityManager.getEntities("tile"))
     {
-        Vec2 overlap = ph.GetOverlap(m_player, tile);
-        Vec2 prevOverlap = ph.GetPreviousOverlap(m_player, tile);
+        Vec2 overlap = m_physics.GetOverlap(m_player, tile);
+        Vec2 prevOverlap = m_physics.GetPreviousOverlap(m_player, tile);
         
         if (overlap.x > 0 && overlap.y > 0)
         {
@@ -355,6 +364,7 @@ void ScenePlay::sCollision()
                 m_player->getComponent<CTransform>().pos.y -= overlap.y;
                 m_player->getComponent<CTransform>().velocity.y = 0;
                 m_player->getComponent<CInput>().canJump = true;
+                is_in_air = false;
             }
             if (prevOverlap.x > 0 && m_player->getComponent<CTransform>().pos.y > tile->getComponent<CTransform>().pos.y)
             {
@@ -376,14 +386,14 @@ void ScenePlay::sCollision()
     {
         for (auto arrow : m_entityManager.getEntities("arrow"))
         {
-            Vec2 overlap = ph.GetOverlap(arrow, tile);
+            Vec2 overlap = m_physics.GetOverlap(arrow, tile);
             if (overlap.x > 0 && overlap.y > 0)
             {
                 arrow->destroy();
             }
         }
     }
-    if (m_player->getComponent<CTransform>().velocity.y != 0)
+    if (is_in_air)
     {
         m_player->addComponent<CState>("Jump");
         m_player->getComponent<CInput>().canJump = false;

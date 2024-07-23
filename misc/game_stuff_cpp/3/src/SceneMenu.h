@@ -6,7 +6,7 @@
 #include <deque>
 #include "EntityManager.h"
 
-class SceneMenu
+class SceneMenu : public Scene
 {
 
 protected:

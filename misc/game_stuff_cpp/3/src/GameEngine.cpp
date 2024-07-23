@@ -15,10 +15,10 @@ void GameEngine::init(const std::string & path)
     m_assets.loadFromFile(path);
     m_window.create(sf::VideoMode(1280, 768), "Test");
     m_window.setFramerateLimit(60);
+    m_sceneMap["MENU"] = std::make_shared<SceneMenu>(this);
     m_sceneMap["PLAY"] = std::make_shared<ScenePlay>(this, "../bin/level.txt");
-    m_currentScene = "PLAY";
+    m_currentScene = "MENU";
 
-    // std::cout << m_currentScene << std::endl;
     // changeScene("PLAY", std::make_shared<ScenePlay>(this));
 }
 
@@ -65,14 +65,6 @@ void GameEngine::sUserInput()
         {
             quit();
         }
-
-        // if (event.type == sf::Event::KeyPressed)
-        // {
-        //     if (event.type == sf::Event::X)
-        //     {
-
-        //     }
-        // }
 
         if (event.type == sf::Event::KeyPressed || event.type == sf::Event::KeyReleased)
         {
