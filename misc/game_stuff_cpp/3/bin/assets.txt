@@ -6,6 +6,7 @@ Texture TexJump ../bin/images/Jump.png
 Texture TexShoot ../bin/images/Shoot.png
 Texture TexArrow ../bin/images/Arrow.png
 Texture TexTree ../bin/images/Tree.png
+Texture TexFinish ../bin/images/Finish.png
 Animation Brick TexBrick 1 0
 Animation Stand TexStand 6 4
 Animation Run TexRun 8 4
@@ -14,4 +15,5 @@ Animation Shoot TexShoot 14 4
 Animation Arrow TexArrow 1 0
 Animation Tree TexTree 1 0
 Animation Cloud TexCloud 1 0
+Animation Finish TexFinish 1 0
 Font Main ../bin/arial.ttf

@@ -1,4 +1,5 @@
 #include "ScenePlay.h"
+#include "SceneMenu.h"
 #include "Physics.h"
 #include "Assets.h"
 #include "GameEngine.h"
@@ -379,6 +380,10 @@ void ScenePlay::sCollision()
             {
                 m_player->getComponent<CTransform>().pos.x += overlap.x;
             }
+            if (tile->getComponent<CAnimation>().animation.getName() == "Finish")
+            {
+                m_game->changeScene("MENU", std::make_shared<SceneMenu>(m_game));  // problem with view - its moved to the left wigth player
+            }
         }
     }
 
@@ -450,7 +455,7 @@ void ScenePlay::sDoAction(const Action & action)
 
 void ScenePlay::onEnd()
 {
-    m_game -> quit();
+    m_game->changeScene("MENU", std::make_shared<SceneMenu>(m_game));
 }
 
 void ScenePlay::update()

@@ -15,11 +15,10 @@ void GameEngine::init(const std::string & path)
     m_assets.loadFromFile(path);
     m_window.create(sf::VideoMode(1280, 768), "Test");
     m_window.setFramerateLimit(60);
-    m_sceneMap["MENU"] = std::make_shared<SceneMenu>(this);
-    m_sceneMap["PLAY"] = std::make_shared<ScenePlay>(this, "../bin/level.txt");
-    m_currentScene = "MENU";
-
-    // changeScene("PLAY", std::make_shared<ScenePlay>(this));
+    // m_sceneMap["MENU"] = std::make_shared<SceneMenu>(this);
+    // m_sceneMap["PLAY"] = std::make_shared<ScenePlay>(this, "../bin/level.txt");
+    // m_currentScene = "MENU";
+    changeScene("MENU", std::make_shared<SceneMenu>(this));
 }
 
 std::shared_ptr<Scene> GameEngine::currentScene()
@@ -81,6 +80,8 @@ void GameEngine::sUserInput()
 void GameEngine::changeScene(const std::string & sceneName, std::shared_ptr<Scene> scene, bool endCurrentScene)
 {
     m_currentScene = sceneName;
+    m_sceneMap[sceneName] = scene;
+
 }
 
 const Assets & GameEngine::getAssets() const
